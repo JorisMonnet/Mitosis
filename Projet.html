@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>AN-Projet Mitose-Joris Monnet</title>
+        <script src="script.js"></script>
+    </head>
+    <body>
+        <button id="buttonStop" onclick="stop()">STOP</button>
+        <button id="buttonStart" onclick="start()">START</button>
+        <button id="buttonReset" onclick="reset()">RESET</button>
+        <br><br>
+        <canvas id="canvas" width="1000" height="1000"></canvas>
+        <h2>1. Introduction</h2>
+        <p>Voici mon projet d'algorithme numérique réalisé dans le cadre de ma deuxième année de Bachelor en Informatique de la HEARC<br>
+        Ce projet à pour but de mettre en pratique nos connaissances récemment acquises dans ce cours lors d'un projet dont le thème est la maladie.<br>
+        Pour ma part j'ai fait le choix de réaliser une simulation de la division cellulaire. Je pars donc d'une cellule unique qui se multiplie au cours du temps,<br>
+        et meurt à la fin de sa durée de vie. Dans ce but, j'ai utilisé : </p>
+        <ul>
+            <li>https://cnx.org/contents/_Y3kkNhF@6/Introduction-to-Cells qui m'a permis de donner une taille à mes cellules, c'est à dire 8µm ici</li>
+            <li>https://www.sciencedirect.com/science/article/pii/S1534580714002299 qui m'a permis de mieux comprendre les phases de la mitose</li>
+            <li>http://book.bionumbers.org/how-quickly-do-different-cells-in-the-body-replace-themselves/ qui m'a permis de donner une durée de vie à mes cellules</li>
+            <li>https://www.sparknotes.com/biology/cellreproduction/cellcycle/section2/ qui m'ont permis de donner un temps à chaque phase du cycle de la mitose</li>
+            <li>http://www.ipubli.inserm.fr/bitstream/handle/10608/1676/2000_4_461.pdf?sequence=5 pour mieux comprendre les phases de la mitose</li>
+        </ul>
+        <h2>2. Solution proposée</h2>
+        <h3>2.1. Idée en lien avec les chapitres d'Algorithmes numériques</h3>
+        <p>Ce projet a permis de réutiliser plusieurs chose du cours, de manière générale, l'utilisation de javascript (en OO), la recherche documentaire scientifique ainsi que la gestion de projet, en effet sur ce dernier point il s'agissait de mon premier projet solo.
+        <br> Plus spécifiquement, le chapitre 7 : optimisation, m'a donné des idées de gestion : c'est à dire notamment pour les ralentissements (optimisation non terminée) mais aussi pour les collisions,
+        <br> je comprenais le sujet, puis le modelisais, puis interpretais les résultats et ensuite corrigeais avnt de revenir à la phase de modélisation.
+        <br> Je me suis de plus appuyé sur des connaissances mathématiques apprises lors des cours d'algorithme numérique notamment la formule de Bayes, ainsi que les formules de Taylor et les explications sur les équations différentielles pour comprendre certaines équations que je rencontrais dans les articles scientifiques parlant de la mitose.<br>
+        <br> Par exemple, pour comprendre les équations différentielles tout au long de cette page : https://who.rocq.inria.fr/Jean.Clairambault/JCCoursModCrCell2007.pdf que je n'ai finalement pas utilisé.
+        </p>
+        <h3>2.2. Modèle développé</h3>
+        <p>J'ai décidé de développer un modèle de simulation avec des paramètres dans le fichier source javascript. La taille des cellules est celle de ma première cellule. Elle va ensuite grandir jusqu'à atteindre 2 fois sa taille initiale et se diviser en deux cellules de même taille (symétrie).<br>
+        Pour arriver à cette division, je mets en place les 4 phases de la mitose. En premier G1 qui est une phase de grossissement (growth) où la cellule va grandir de plus en plus, sur un cycle de 24h, c'est à dire le cycle classique pour une mitose, G1 dure 12h. D'après les différentes sources que j'ai pu trouver, notamment celle -ci : https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.0030064 <br>
+        Cette durée varie entre 33 et 50 % du cycle total. Au niveau de mon programme, la phase G1 est visible, la cellule va grossir doucement.<br>
+        <img src="G1.png" alt="G1"><br>
+        La phase S ensuite est la phase qui dans la réalité sert aux banches d'adn de se diviser et se placer aux extrémités de la cellule. Mes cellules sont animées avec un noyau qui bouge légèrement dans le cytoplasme. Pour montrer cette phase S, je divise ce noyau en deux qui durant toute la phase S vont grossir (une façon de montrer graphiquement l'adn qui reconstruit ses brins manquants puisqu'elle s'est duivisé en deux).<br>
+        Cette phase dure 6 heures dans mon modèle. <br>
+        <img src="S.png" alt="S"><br>
+        Ensuite la phase G2 est à nouveau une phase de grossissement, la cellule va donc grossir mais toujours avec ses deux noyaux dans les bords, pendant 4h. 
+        Enfin, la phase M correspond à la mitose en elle même, la cellule maintenant au double de sa taille initiale se divise en deux autres cellules.<br>
+        <img src="M.png" alt="M"><br>
+        <br>
+        J'ai de plus décidé de mettre en place une durée de vie aux cellules comme dans la réalité, pour des raisons estéthiques au niveau de l'animation, j'ai priviligié une durée de vie courte, de ce fait les cellules d'estomac/intestin avec leur durée de vie de 48 heures étaient toutes appropriées. Afin de mieux visualiser les cellules mourantes, j'ai mis des nuances de beige à mes cellules, plus la cellule tire vers le noir, plus elle est proche de la mort, au contraire, à sa création (mitose), elle sera beige clair<br>
+        <br>Par exemple voici une cellule en fin de vie : <img src="endLife.png" alt="endLife"><br><br>
+        Enfin, j'ai géré les collisions. En effet, les cellules ne se chevauchent pas entre elles et trouve des places où se développer à chaque fois.<br>
+        Au niveau de la temporalité, par defaut, 100 ms dans le programme correspondent à 1 heure dans la réalité.
+        </p>
+        <h2>3. Résultats</h2>
+        <p>Comme vous pouvez le voir ci dessus, le résultat est très visuel, on voit bien la démultiplication exponentielle des cellules, et les couleurs permettent de facilement voir leur avancement dans leur temps de vie. De plus, les noyaux simples ou doubles permettent de voir dans quelle phase ce trouve chaque cellule. <br>
+            Malheureusement ce résultat n'est pas parfait, en effet, le setInterval va parfois prendre plus de temps que prévu lorsqu'il y a un nombre important de cellules à gérer sur la page. De ce fait, l'application connait de forts ralentissements.  <br>
+            Bien sûr plusieurs problèmes sont envisageables et donc plusieurs solutions. Passer par un setTimeout à la place du setInterval est sans effet, il semblerait que la grande difficulté pour l'application est de calculer les collisions des celulles puisque chaque cellule vérifie si elle ne touche pas chaque autre cellule. <br>
+            Une autre solution qui fut envisagée et testée, est de tester uniquement les cellules voisines de celle qui recherche ses collisions. Pas de véritables gains de performance dans ce cas-là non plus. Le problème viendrait donc plutot du while(intersection()) avec move() qui est renvoyé en permanence. Cela crée une boucle sur chaque cellule.
+        </p>
+        <h2>4. Conclusion</h2>
+        <p>Le projet correspond donc à mes attentes initiales, son point fort est la mise en place des quatres phases, ce qui permet d'être plus proche de la réalité. Malheureusement, sa faiblesse est qu'il est sujet à des ralentissements importants donc la première chose à améliorer serait de continuer à optimiser le programme pour eviter cela.
+        <br>En terme de maintenance ou de reprise par un developpeur, les variables globales de durée de vie, de taille, de temps de cycle sont toutes au début du programme, il est donc aisé de modifier ce modèle pour montrer d'autres manières que pourraient avoir les cellules pour se diviser.
+        <br>Les futures fonctionnalités à ajouter seraient une mise en place possible d'un cancer, pour étudier l'apparition d'une telle maladie dans une population de cellules en train de se former comme ici.
+        </p>
+        <p>Auteur : Joris Monnet <br>Date : 21/06/2020</p>
+    </body>
+</html>
